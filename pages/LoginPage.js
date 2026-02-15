@@ -1,13 +1,50 @@
 import React, {useState} from 'react';
 import { View , Text, TextInput, StyleSheet, Button, Pressable } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserByUsername } from '../firebase/FirebaseController';
 
-export default function LoginPage(){
+export default function LoginPage({onLogin}){
     const [usernameInput, setUsernameInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const [errorMessageUsername, setErrorMessageUsername] = useState("");
     const [errorMessagePassword, setErrorMessagePassword] = useState("");
 
+    const [isLogin, setIsLogin] = useState(true)
+
+    const handleLogin = async () => {
+        setErrorMessagePassword("");
+        setErrorMessageUsername("");
+        
+        setIsLoading(true);
+
+        try {
+            const user = await getUserByUsername(usernameInput);
+            console.log(user)
+            if (!user){
+                setErrorMessageUsername("The Username does not exist");
+                
+                setIsLoading(false);
+                return;
+            }
+
+            if (user.Password === passwordInput){
+                console.log("Login successfull!")
+                await AsyncStorage.setItem('logged-in', 'true');
+                await AsyncStorage.setItem('logged-in-user', usernameInput);
+                if (onLogin) onLogin();
+            } else {
+                setErrorMessageUsername("Wrong Password")
+            }
+        } catch (error) {
+            setErrorMessagePassword("Connection Error... Try again");
+            console.error(error);
+        } finally {
+            setIsLoading(false)
+        }
+    }
+    
     return(
         <View style = {styles.containerOuter}>
             <View style = {styles.containerInner}>
@@ -39,7 +76,7 @@ export default function LoginPage(){
                         </Pressable>
                     </View>
                     <View style = {styles.buttonContainer}>
-                        <Pressable style = {styles.pressable}>
+                        <Pressable style = {styles.pressable} onPress = {handleLogin}>
                             <Text style = {styles.pressableText}>Login</Text>
                         </Pressable>
                     </View>                   
