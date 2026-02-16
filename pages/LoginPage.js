@@ -1,25 +1,40 @@
 import React, {useState} from 'react';
-import { View , Text, TextInput, StyleSheet, Button, Pressable } from 'react-native';
+import { View , Text, TextInput, StyleSheet, Button, Pressable, ActivityIndicator, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUserByUsername } from '../firebase/FirebaseController';
+import { getAuth , signInWithEmailAndPassword , createUserWithEmailAndPassword} from "firebase/auth";
 
-export default function LoginPage({onLogin}){
-    const [usernameInput, setUsernameInput] = useState("");
-    const [passwordInput, setPasswordInput] = useState("");
+export default function LoginPage(){
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    // const [usernameInput, setUsernameInput] = useState("");
+    // const [passwordInput, setPasswordInput] = useState("");
+
     const [isLoading, setIsLoading] = useState(false);
-
     const [errorMessageUsername, setErrorMessageUsername] = useState("");
     const [errorMessagePassword, setErrorMessagePassword] = useState("");
 
     const [isLogin, setIsLogin] = useState(true)
 
+    const auth = getAuth();
+
     const handleLogin = async () => {
         setErrorMessagePassword("");
         setErrorMessageUsername("");
-        
         setIsLoading(true);
 
         try {
+            if (isLogin) {
+                await signInWithEmailAndPassword(auth, email, password);
+                console.log("Login Successfull!");
+            } else {
+                await createUserWithEmailAndPassword(auth,email,password);
+                console.log("Registirerung erfolgreich!");
+                Alert.alert("Erfolg", "Account erstellt!");
+            }
+            /*
             const user = await getUserByUsername(usernameInput);
             console.log(user)
             if (!user){
@@ -36,10 +51,16 @@ export default function LoginPage({onLogin}){
                 if (onLogin) onLogin();
             } else {
                 setErrorMessageUsername("Wrong Password")
-            }
+            } */
         } catch (error) {
-            setErrorMessagePassword("Connection Error... Try again");
+            // setErrorMessagePassword("Connection Error... Try again");
             console.error(error);
+            if (error.code === 'auth/invalid-email') setErrorMessageUsername("E-Mail invalid");
+            else if (error.code === 'auth/user-not-found') setErrorMessageUsername("User does not exist");
+            else if (error.code === 'auth/wrong-password') setErrorMessagePassword("Wrong Password");
+            else if (error.code === 'auth/email-already-in-use') setErrorMessageUsername("E-Mail already in use");
+            else if (error.code === 'auth/weak-password') setErrorMessagePassword("Password too short (min. 6 characters)");
+            else setErrorMessagePassword(error.message);
         } finally {
             setIsLoading(false)
         }
@@ -48,22 +69,25 @@ export default function LoginPage({onLogin}){
     return(
         <View style = {styles.containerOuter}>
             <View style = {styles.containerInner}>
-                <Text style= {styles.title1}> Login Page </Text>
+                <Text style= {styles.title1}> {isLogin ? "Login" : "Register"} </Text>
                 <View style = {styles.containerInputFields}>
                     <View style = {styles.containerInputField}>
                         <TextInput 
-                            onChangeText={setUsernameInput}
-                            value = {usernameInput}
-                            placeholder="Enter Username"
+                            onChangeText={setEmail}
+                            value = {email}
+                            placeholder="Enter E-Mail"
                             style = {styles.textInputField}
+                            autoCapitalize="none"
+                            keyboardType = "email-address"
                         />
                         <Text style= {styles.errorText}>{errorMessageUsername}</Text>
                     </View>
                     <View style = {styles.containerInputField}>
                         <TextInput 
-                            onChangeText={setPasswordInput}
-                            value = {passwordInput}
-                            placeholder="Enter Password"
+                            onChangeText = {setPassword}
+                            value = {password}
+                            placeholder = "Password"
+                            secureTextEntry = {true}
                             style = {styles.textInputField}
                         />  
                         <Text style= {styles.errorText}>{errorMessagePassword}</Text>
@@ -71,13 +95,21 @@ export default function LoginPage({onLogin}){
                 </View>
                 <View style = {styles.containerButtons}>
                     <View style = {styles.buttonContainer}>
-                        <Pressable style = {styles.pressable}>
-                            <Text style = {styles.pressableText}>Register</Text>
+                        <Pressable style = {styles.pressable} onPress={() => {
+                            setIsLogin(!isLogin);
+                            setErrorMessagePassword("");
+                            setErrorMessageUsername("");
+                        }}>
+                            <Text style = {styles.pressableText}>{isLogin ? "To Registration" : "To Login"}</Text>
                         </Pressable>
                     </View>
                     <View style = {styles.buttonContainer}>
-                        <Pressable style = {styles.pressable} onPress = {handleLogin}>
-                            <Text style = {styles.pressableText}>Login</Text>
+                        <Pressable style = {styles.pressable} onPress = {handleLogin} disabled = {isLoading}>
+                            {isLoading ? <ActivityIndicator color = '#AEF3E7'/> : (
+                                <Text style={styles.pressableText}>
+                                    {isLogin ? "Login" : "Sign Up"}
+                                </Text>
+                            )}
                         </Pressable>
                     </View>                   
                 </View>
@@ -154,6 +186,6 @@ const styles = StyleSheet.create({
     },
     pressableText:{
         color: '#AEF3E7',
-        fontSize: 24,
+        fontSize: 14,
     }
 })

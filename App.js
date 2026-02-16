@@ -3,30 +3,20 @@ import FooterMenu from './components/FooterMenu';
 import { useEffect , useState , createContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {initializeApp} from 'firebase/app';
-// Page imports : 
 
+
+// Firbase imports: 
+import {initializeApp} from 'firebase/app';
+import {getAuth, onAuthStateChanged} from 'firebase/auth';
+
+// Page imports : 
 import LoginPage from './pages/LoginPage';
 import MapPage from './pages/MapPage';
 import LocationListPage from './pages/LocationListPage';
 import CountriesPage from './pages/CountriesPage';
 
 // Context imports :
-
 import { UserContext } from './contexts/Contexts';
-
-/*
-const firebaseConfig = {
-  apiKey: "AIzaSyBzfSedBgTwuGgFqDr1DNqTjLwA8adO87c",
-  authDomain: "mobile-programming-c8111.firebaseapp.com",
-  projectId: "mobile-programming-c8111",
-  storageBucket: "mobile-programming-c8111.firebasestorage.app",
-  messagingSenderId: "903217529740",
-  appId: "1:903217529740:web:c70cf265b1e5ab13ef4ca9",
-  measurementId: "G-TLY3HLF8W9"
-}
-const app = initializeApp(firebaseConfig)
-*/
 
 const menuPages = [
   { name: 'Map', component: MapPage, iconName: 'location-sharp' },
@@ -37,17 +27,21 @@ const menuPages = [
 
 export default function App() {
 
+  /*
   const onLoginSuccess = async () => {
     const user = await AsyncStorage.getItem('logged-in-user');
     setLoggedInUser(user);
     setLoggedIn(true);
   }
+  */
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   
+  const auth = getAuth();
 
+  /*
   const checkLoggedIn = async () => {
     try {
       const value = await AsyncStorage.getItem('logged-in');
@@ -65,35 +59,56 @@ export default function App() {
       setIsLoading(false)
     }
   }
+  */
 
+  /*
   useEffect(() => {
     checkLoggedIn();
   }, [] );
- 
+  */
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User logged in
+        console.log("User detected:", user.email);
+        setLoggedInUser(user.email);
+        setLoggedIn(true)
+      } else {
+        setLoggedInUser(null);
+        setLoggedIn(false)
+      }
+      setIsLoading(false);
+    });
+
+    return unsubscribe;
+
+  }, [])
+
   console.log(loggedIn)
+
   return(
-    isLoading ? 
-    <View style= {styles.container}>
-      <ActivityIndicator size="large" color = "lightblue"/>
-    </View> : (
-      loggedIn 
-      ? 
-      <UserContext.Provider value = {{loggedIn, setLoggedIn, loggedInUser, setLoggedInUser}}>
-        <NavigationContainer>
-          <FooterMenu 
-            pages = {menuPages}  
-            colorActive = 'lightblue' 
-            colorInactive= 'gray' 
-          />
-        </NavigationContainer>
-      </UserContext.Provider>
-      
-      : (
-      <View style = {styles.containerLogin}>
-        <LoginPage onLogin = {onLoginSuccess}/>
-      </View>
-      )
-    )
+    <UserContext.Provider value = {{loggedIn, setLoggedIn, loggedInUser, setLoggedInUser}}>
+      {isLoading ? ( 
+        <View style= {styles.container}>
+          <ActivityIndicator size="large" color = "lightblue"/>
+        </View>
+      ) : (
+        loggedIn ? (
+          <NavigationContainer>
+            <FooterMenu 
+              pages = {menuPages}  
+              colorActive = 'lightblue' 
+              colorInactive= 'gray' 
+            />
+          </NavigationContainer>
+        ) : (
+          <View style = {styles.containerLogin}>
+            <LoginPage />
+          </View>
+        )
+      )}
+    </UserContext.Provider>
   );
 }
 
