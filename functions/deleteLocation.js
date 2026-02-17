@@ -3,7 +3,7 @@ import loadMyLocations from "./loadMyLocations";
 import { getFirestore, deleteDoc, doc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-const deleteLocation = async (id, setLoading, setLocations) => {
+export default async function deleteLocation(id, setLoading, setLocations){
 
     const db = getFirestore();
     const auth = getAuth();
@@ -26,5 +26,3 @@ const deleteLocation = async (id, setLoading, setLocations) => {
     }
 
 };
-
-export default deleteLocation;

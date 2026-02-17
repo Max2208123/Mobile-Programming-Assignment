@@ -8,8 +8,8 @@ import loadMyLocations from '../functions/loadMyLocations';
 import addLocation from '../functions/addLocation';
 import deleteLocation from '../functions/deleteLocation.js';
 
-import {colors} from '../styling/colors.js'
-
+import {colors} from '../styling/colors.js';
+import AddLocationMask from '../components/AddLocationMask.js';
 
 export default function LocationListPage(){
 
@@ -72,28 +72,63 @@ export default function LocationListPage(){
         loadMyLocations(setLoading, setLocations);
     }, [] );
 
+    const DesignConfig = {
+        icon: {
+            size: 20,
+            color: colors.lineColorDark
+        }
+    }
 
-    const iconWidth = 20
     return(
         <View style = {styles.componentContainer}>
         {loading ? (
             <ActivityIndicator size = "large" />
         ) : (
             <View style = {styles.flatListContainer}>
-                <View style = {styles.flatListHeader}>
-                    <View style = {styles.flatListHeaderText}>
-                    <Text style = {styles.headerText}>Your Locations</Text>
+                <View style = {addingEntry ? (styles.pageHeaderActive) : (styles.pageHeaderInactive)}>
+                    <View style = {styles.flatListHeader}> 
+                        <View style = {styles.flatListHeaderText}>
+                            <Text style = {styles.headerText}>Your Locations</Text>
+                        </View>
+                            <View style = {styles.flatListHeaderPressable}>
+                            <Pressable onPress={() => {setAddingEntry(!addingEntry)}}
+                            >
+                                {addingEntry ? (
+                                    <View style = {styles.addLocationMask.buttonContainer}>
+                                        <Text style = {styles.addLocationMask.buttonText}>Cancel</Text>
+                                        <Ionicons
+                                            name = 'close-outline'
+                                            size = {DesignConfig.icon.size}
+                                            color = {colors.backgroundScreen}
+                                            style = {styles.addLocationMask.buttonIcon}
+                                        />
+                                    </View>
+                                ) : (
+                                    <View style = {styles.addLocationMask.buttonContainer}>
+                                        <Text style = {styles.addLocationMask.buttonText}>Add Location</Text>
+                                        <Ionicons
+                                            name = 'add'
+                                            size = {DesignConfig.icon.size}
+                                            color = {colors.backgroundScreen}
+                                            style = {styles.addLocationMask.buttonIcon}
+                                        />
+                                    </View>
+                                )}
+                            </Pressable>
+                            </View>
                     </View>
-                    <View style = {styles.flatListHeaderPressable}>
-                        <Pressable style = {styles.pressableHeader}>
-                            <Text>Add Location</Text>
-                            <Ionicons
-                                name = 'add'
-                                size = {iconWidth}
-                            />
-                        </Pressable>
-                    </View>
+                    {addingEntry ? (
+                        <View > 
+                            <AddLocationMask designConfig = {DesignConfig} styles={styles.addLocationMask} setLoading={setLoading} setLocations={setLocations} setAddingEntry={setAddingEntry}/>
+                        </View>
+                    ) : (
+                        <View> 
+                            
+                        </View>
+                    )}
                 </View>
+
+
                 <FlatList
                     style = {styles.flatList}
                     data = {locations}
@@ -105,18 +140,18 @@ export default function LocationListPage(){
                                     <Text style = {styles.headerText}>{item.name}</Text>
                                 </View>
                                 <View style = {styles.starContainer}>
-                                    <Ionicons name = 'star' size = {iconWidth}/>
-                                    <Ionicons name = 'star' size = {iconWidth}/>
-                                    <Ionicons name = 'star' size = {iconWidth}/>
-                                    <Ionicons name = 'star' size = {iconWidth}/>
-                                    <Ionicons name = 'star' size = {iconWidth}/>
+                                    <Ionicons name = 'star' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
+                                    <Ionicons name = 'star' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
+                                    <Ionicons name = 'star' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
+                                    <Ionicons name = 'star' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
+                                    <Ionicons name = 'star' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
                                 </View>
                                 <View style = {styles.pressableContainer}>
                                     <Pressable>
-                                        <Ionicons name = 'settings' size = {iconWidth}/>
+                                        <Ionicons name = 'settings' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
                                     </Pressable>
                                     <Pressable onPress = {() => deleteLocation(item.id, setLoading, setLocations)}>
-                                        <Ionicons name = 'trash' size = {iconWidth}/>
+                                        <Ionicons name = 'trash' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
                                     </Pressable>
                                 </View>
 
@@ -128,31 +163,34 @@ export default function LocationListPage(){
                 />  
             </View>  
         )} 
-            <Button 
-                title = 'loadMyLocations' 
-                onPress= {loadMyLocations}
-            />
-            <Button 
-                title = 'addLocation' 
-                onPress =  {() => {
-                        const newCount = locations.length + 1;
-                        addLocation(`Test ${newCount}`, '1234 Test', setLoading, setLocations);
-                }}/>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
 
+    pageHeaderActive: {
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: colors.backgroundAccent,
+        margin: 5,
+        padding: 5,
+        backgroundColor: colors.backgroundScreen,
+        borderRadius: 10,
+    },
+    pageHeaderInactive:{
+        margin: 5,
+        padding: 6,
+        borderRadius: 5,
+    },
     flatListHeader: {
         flexDirection: 'row',
         justifyContent: 'center',
-        marginBottom: 10
+        marginBottom: 10,
     },
     flatListHeaderText:{
         width: '55%',
-        justifyContent: 'flex-start',
-        alignItems: ''
+        justifyContent: 'center',
     },
     flatListHeaderPressable:{
         width: '45%',
@@ -171,11 +209,12 @@ const styles = StyleSheet.create({
     flatListContainer:{
         alignItems: 'center',
         margin: 20,        
-        borderWidth: 1,
         padding: 10,
         borderRadius: 10,
         borderColor: colors.lineColorDark,
         backgroundColor: colors.backgroundItem,
+        borderWidth: 1,
+        borderColor: colors.lineColorDark,
         
     },
     componentContainer:{
@@ -189,7 +228,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         borderTopWidth: 1,
     },
-
+ 
     textContainer:{
         width: '55%',
         paddingRight: '5%',
@@ -209,7 +248,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '30%',
         justifyContent: 'center',
-        borderWidth: 1,
     },
 
     pressableContainer:{
@@ -217,8 +255,82 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
         width: '15%',
-        borderWidth: 1,
     },
+    addLocationMask:{
+        componentContainer:{
+            margin: 10,
+            borderColor: colors.backgroundAccent,
+            backgroundColor: colors.backgroundScreen,
+        },
+        topLineContainer:{
+            flexDirection:'row',
+            width: '100%',
+        },
+        titleInputContainer:{
+            width: '55%'
+        },
+        titleInput:{
+            margin: 5,
+            padding: 5,
+            borderBottomWidth: 1,
+            marginRight: 5,
 
-    
+        },
+        ratingInputContainer:{
+            width: '45%',
+            alignItems: 'end',
+            paddingLeft: 5,
+        },
+        middleLineContainer:{
+        },  
+        descriptionInput:{
+            borderBottomWidth:1,
+            margin: 5,
+            padding: 5,
+        },      
+        header2Text:{
+            color: colors.lineColorDark,
+            fontWeight: 'bold',
+        },
+        starSelector:{
+            marginTop: 10,
+            alignItems: 'center',
+        },
+        errorText:{
+            color: colors.errorRed,
+            textAlign: 'left',
+            width: '75%',
+            paddingRight: 5,
+        },
+        inputHeaderTopline:{
+            flexDirection:'row',
+            width: '100%'
+        },
+
+        bottomLineContainer:{
+            flexDirection:'row',
+            alignItems:'right',
+            justifyContent:'flex-end',
+        },
+        buttonContainer:{
+            flexDirection:'row',
+            borderWidth: 1,
+            backgroundColor: colors.backgroundAccent,
+            borderRadius: 23,
+            padding: 5,
+            paddingLeft: 10,
+            margin: 5,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        buttonText:{
+            color: colors.backgroundScreen
+        },
+        buttonIcon:{
+            borderWidth: 1,
+            borderRadius: 12,
+            borderColor: colors.backgroundScreen,
+            marginLeft: 5
+        },
+    }
 })

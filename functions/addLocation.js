@@ -4,7 +4,7 @@ import { getAuth } from "firebase/auth";
 import loadMyLocations from "./loadMyLocations.js";
 
 
-const addLocation = async (locationName, description, setLoading, setLocations) => {
+const addLocation = async ({locationName}, {description}, {rating}, {setLoading}, {setLocations}) => {
 
     const db = getFirestore();
     const auth = getAuth();
@@ -21,7 +21,8 @@ const addLocation = async (locationName, description, setLoading, setLocations) 
             name: locationName,
             description: description,
             userId: user.uid,
-            createdAt: new Date()
+            createdAt: new Date(),
+            rating: rating,
         })
         console.log("Saved");
         loadMyLocations(setLoading, setLocations);
