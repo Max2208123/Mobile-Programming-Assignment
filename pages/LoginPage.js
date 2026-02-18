@@ -84,7 +84,7 @@ export default function LoginPage(){
                     </View>
                     <View style = {styles.containerInputField}>
                         <TextInput 
-                            onChangeText = {setPassword}
+                            onChangeText = {setPassword} 
                             value = {password}
                             placeholder = "Password"
                             secureTextEntry = {true}

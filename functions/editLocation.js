@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import { getFirestore , collection , addDoc } from "firebase/firestore";
+import { getFirestore , collection , addDoc, updateDoc, doc} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import loadMyLocations from "./loadMyLocations.js";
 
-
-const addLocation = async (locationName, description, rating, setLoading, setLocations) => {
+const editLocation = async (locationName, description, rating, setLoading, setLocations, item) => {
 
     const db = getFirestore();
     const auth = getAuth();
@@ -15,19 +14,19 @@ const addLocation = async (locationName, description, rating, setLoading, setLoc
         console.error("No User logged in!");
         return;
     }
-
     try {
-        await addDoc(collection(db, "locations"), {
+        await updateDoc(doc(db,"locations",item.id),{
             name: locationName,
             description: description,
             userId: user.uid,
-            createdAt: new Date(),
             rating: rating,
         })
         console.log("Saved");
-        loadMyLocations(setLoading, setLocations);
+        loadMyLocations(setLoading, setLocations)
     } catch (e) {
-        console.error("Error while Saving:", e);
+        console.error("Error while Saving:", e)
     }
-}
-export default addLocation;
+    return;
+};
+
+export default editLocation;

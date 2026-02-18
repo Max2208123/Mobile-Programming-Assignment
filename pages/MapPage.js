@@ -25,7 +25,7 @@ export default function MapPage(){
     }
     return(
         <View>
-            <Text> Map Page </Text>
+            <Text> Map Page </Text> 
             <Button title='Sign Out' onPress={() => handleLogout()}/>
         </View>
     )

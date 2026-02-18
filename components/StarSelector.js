@@ -28,24 +28,26 @@ function Star({position, currentRating, onPress, designConfig}){
     )
 }
 
-export default function StarSelector({setVariable, designConfig, style, startRating = 0}){
+export default function StarSelector({setVariable, designConfig, style, startRating = 0, editable = true}){
 
-    const [rating, setRating] = useState(startRating)    
+    const [rating, setRating] = useState(startRating)
     
     const handleStarPress = (starPosition) => {
-        let newRating;
-        if (rating === starPosition && rating != 1) {
-            newRating = starPosition - 0.5;
-        } else {
-            newRating = starPosition
-        }
-        setRating(newRating);
+        if (editable){
+            let newRating;
+            if (rating === starPosition && rating != 1) {
+                newRating = starPosition - 0.5;
+            } else {
+                newRating = starPosition
+            }
+            setRating(newRating);
 
-        if (setVariable){
-            setVariable(newRating);
+            if (setVariable){
+                setVariable(newRating);
+            }
+        } else {
+            return;
         }
-        console.log(newRating)
-        
     }
 
     return(

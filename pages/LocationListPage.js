@@ -7,9 +7,12 @@ import { Ionicons } from '@expo/vector-icons';
 import loadMyLocations from '../functions/loadMyLocations';
 import addLocation from '../functions/addLocation';
 import deleteLocation from '../functions/deleteLocation.js';
+import editLocation from '../functions/editLocation.js';
 
 import {colors} from '../styling/colors.js';
 import AddLocationMask from '../components/AddLocationMask.js';
+import StarSelector from '../components/StarSelector.js';
+import FlatListElement from '../components/FlatListElement.js';
 
 export default function LocationListPage(){
 
@@ -19,55 +22,8 @@ export default function LocationListPage(){
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const [addingEntry, setAddingEntry] = useState(false);
+    const [activeAction, setActiveAction] = useState(null);
 
-/*
-    const addLocation = async (locationName, description) => {
-        const user = auth.currentUser;
-        
-        if (!user) {
-            console.error("Kein User eingeloggt!");
-            return;
-        }
-
-        try {
-            await addDoc(collection(db, "locations"), {
-                name: locationName,
-                description: description,
-                userId: user.uid,
-                createdAt: new Date()
-            })
-            console.log("Saved");
-            loadMyLocations();
-        } catch (e) {
-            console.error("Fehler beim Speichern:", e);
-        }
-    }
-
-    const loadMyLocations = async () => {
-        const user = auth.currentUser;
-        if (!user) return;
-
-        setLoading(true)
-        try {
-            const loactionsRef = collection(db, "locations");
-
-            const q = query(loactionsRef, where("userId", "==", user.uid));
-            const querySnapshot = await getDocs(q);
-
-            const myData = [];
-            querySnapshot.forEach((doc) => {
-                myData.push({ id: doc.id, ...doc.data() });
-            });
-            setLocations(myData)
-            console.log("Meine Locations:", myData);
-        } catch (e) {
-            console.error("Error while loading:", e)
-        } finally {
-            setLoading(false);
-        }
-    }
-*/
     useEffect(() => {
         loadMyLocations(setLoading, setLocations);
     }, [] );
@@ -85,15 +41,16 @@ export default function LocationListPage(){
             <ActivityIndicator size = "large" />
         ) : (
             <View style = {styles.flatListContainer}>
-                <View style = {addingEntry ? (styles.pageHeaderActive) : (styles.pageHeaderInactive)}>
-                    <View style = {styles.flatListHeader}> 
+                <View style = {activeAction?.type === 'add' ? styles.pageHeaderActive : styles.pageHeaderInactive}>
+                    <View style = {styles.flatListHeader}>
                         <View style = {styles.flatListHeaderText}>
                             <Text style = {styles.headerText}>Your Locations</Text>
                         </View>
                             <View style = {styles.flatListHeaderPressable}>
-                            <Pressable onPress={() => {setAddingEntry(!addingEntry)}}
-                            >
-                                {addingEntry ? (
+                            <Pressable onPress={() => {
+                                setActiveAction(activeAction?.type === 'add' ? null : {type:'add'})
+                            }}>
+                                {activeAction?.type === 'add' ? (
                                     <View style = {styles.addLocationMask.buttonContainer}>
                                         <Text style = {styles.addLocationMask.buttonText}>Cancel</Text>
                                         <Ionicons
@@ -117,14 +74,17 @@ export default function LocationListPage(){
                             </Pressable>
                             </View>
                     </View>
-                    {addingEntry ? (
-                        <View > 
-                            <AddLocationMask designConfig = {DesignConfig} styles={styles.addLocationMask} setLoading={setLoading} setLocations={setLocations} setAddingEntry={setAddingEntry}/>
+                    {activeAction?.type === 'add' ? (
+                        <View>
+                            <AddLocationMask 
+                                designConfig = {DesignConfig} 
+                                styles={styles.addLocationMask} 
+                                setLoading={setLoading} 
+                                setLocations={setLocations} 
+                                setAddingEntry={() => setActiveAction(null)}/>
                         </View>
                     ) : (
-                        <View> 
-                            
-                        </View>
+                        <View></View>
                     )}
                 </View>
 
@@ -134,18 +94,18 @@ export default function LocationListPage(){
                     data = {locations}
                     keyExtractor = {(item) => item.id}
                     renderItem={({item}) => (
-                        <View style = {styles.flatListElementContainer}>
+                        /* <View style = {styles.flatListElementContainer}>
                             <View style =  {styles.flatListItemTopRow}>
                                 <View style = {styles.textContainer}>
                                     <Text style = {styles.headerText}>{item.name}</Text>
                                 </View>
-                                <View style = {styles.starContainer}>
-                                    <Ionicons name = 'star' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
-                                    <Ionicons name = 'star' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
-                                    <Ionicons name = 'star' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
-                                    <Ionicons name = 'star' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
-                                    <Ionicons name = 'star' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
-                                </View>
+                                <StarSelector
+                                    setVariable = {editLocation}
+                                    designConfig= {DesignConfig}
+                                    style = {styles.addLocationMask.starSelector}
+                                    startRating = {item.rating}
+                                    editable = {false}
+                                />
                                 <View style = {styles.pressableContainer}>
                                     <Pressable>
                                         <Ionicons name = 'settings' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
@@ -154,15 +114,24 @@ export default function LocationListPage(){
                                         <Ionicons name = 'trash' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
                                     </Pressable>
                                 </View>
-
                             </View>
                             <Text style = {styles.descriptionText}>{item.description}</Text>
-                        </View>
+                        </View> */
+                        <FlatListElement
+                            item = {item}
+                            setLoading = {setLoading}
+                            setLocations = {setLocations}
+                            styles = {styles}
+                            DesignConfig = {DesignConfig}
+                            isEditing = {activeAction?.type === 'edit' && activeAction?.id === item.id}
+                            onEditPress = {() => setActiveAction({type: 'edit', id: item.id})}
+                            onCancel={() => setActiveAction(null)}
+                        />
                     )}
                     ListEmptyComponent={<Text>No Locations found.</Text>}
-                />  
-            </View>  
-        )} 
+                />
+            </View>
+        )}
         </View>
     )
 }
@@ -196,7 +165,8 @@ const styles = StyleSheet.create({
         width: '45%',
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginRight: 5
     },
     pressableHeader: {
         alignItems: 'flex-end', 
@@ -221,12 +191,13 @@ const styles = StyleSheet.create({
         backgroundColor: colors.backgroundScreen,
     },    
     flatListElementContainer:{
+        borderTopWidth: 1,
+        borderColor: colors.lineColorDark
     },
     flatListItemTopRow:{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        borderTopWidth: 1,
     },
  
     textContainer:{
@@ -332,5 +303,15 @@ const styles = StyleSheet.create({
             borderColor: colors.backgroundScreen,
             marginLeft: 5
         },
-    }
+    },
+    listElementHeaderActive: {
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: colors.backgroundAccent,
+        margin: 5,
+        paddingLeft: 5,
+        paddingRight: 5,
+        backgroundColor: colors.backgroundScreen,
+        borderRadius: 10,
+    },
 })
