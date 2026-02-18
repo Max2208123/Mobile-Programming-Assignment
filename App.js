@@ -18,6 +18,9 @@ import CountriesPage from './pages/CountriesPage';
 // Context imports :
 import { UserContext } from './contexts/Contexts';
 
+// Style imports:
+import { colors } from './styling/colors';
+
 const menuPages = [
   { name: 'Map', component: MapPage, iconName: 'location-sharp' },
   { name: 'Locations', component: LocationListPage, iconName: 'list'},
@@ -88,14 +91,14 @@ export default function App() {
   console.log(loggedIn)
 
   return(
-    <UserContext.Provider value = {{loggedIn, setLoggedIn, loggedInUser, setLoggedInUser}}>
+    <UserContext.Provider value = {{loggedIn, setLoggedIn, loggedInUser, setLoggedInUser}} style = {{backgroundColor: colors.backgroundColor}}>
       {isLoading ? ( 
         <View style= {styles.container}>
           <ActivityIndicator size="large" color = "lightblue"/>
         </View>
       ) : (
         loggedIn ? (
-          <NavigationContainer>
+          <NavigationContainer style =  {styles.container}>
             <FooterMenu 
               pages = {menuPages}  
               colorActive = 'lightblue' 
@@ -115,7 +118,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#AEF3E7',
     alignItems: 'center',
     justifyContent: 'center',
   },

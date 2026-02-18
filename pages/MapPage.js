@@ -1,32 +1,31 @@
-import React, {useContext} from 'react';
-import { View , Text, Button } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserContext } from '../contexts/Contexts';
+import React from 'react';
+import { View , Text, Button, Dimensions, StyleSheet } from 'react-native';
+import MapView from 'react-native-maps';
 
-import {getAuth, signOut} from "firebase/auth";
+
+import handleLogout from '../functions/handleLogout';
+
 
 export default function MapPage(){
 
     // const {loggedIn, setLoggedIn, loggedInUser, setLoggedInUser} = useContext(UserContext) 
-    const auth = getAuth()
-
-    const handleLogout = async () => {
-        try {
-            /*
-            setLoggedIn(false);
-            setLoggedInUser(null);
-            console.log("Logout  Successfull!")
-            */
-           await signOut(auth)
-           console.log("Erfolgreich ausgeloggt!");
-        } catch(e) {
-            console.error("Error while logging out:",e)
-        }
-    }
+    
     return(
         <View>
             <Text> Map Page </Text> 
+            <MapView style={styles.map}>
+            
+
+            </MapView>
+            <Text>Test</Text>
             <Button title='Sign Out' onPress={() => handleLogout()}/>
         </View>
     )
 } 
+
+const styles = StyleSheet.create({
+    map:{
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    }
+})

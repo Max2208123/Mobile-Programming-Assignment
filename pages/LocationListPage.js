@@ -10,6 +10,8 @@ import deleteLocation from '../functions/deleteLocation.js';
 import editLocation from '../functions/editLocation.js';
 
 import {colors} from '../styling/colors.js';
+import {styles} from '../styling/styles.js';
+
 import AddLocationMask from '../components/AddLocationMask.js';
 import StarSelector from '../components/StarSelector.js';
 import FlatListElement from '../components/FlatListElement.js';
@@ -135,7 +137,7 @@ export default function LocationListPage(){
         </View>
     )
 }
-
+/*
 const styles = StyleSheet.create({
 
     pageHeaderActive: {
@@ -314,4 +316,4 @@ const styles = StyleSheet.create({
         backgroundColor: colors.backgroundScreen,
         borderRadius: 10,
     },
-})
+}) */
