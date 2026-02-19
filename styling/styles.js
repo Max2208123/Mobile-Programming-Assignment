@@ -249,11 +249,10 @@ export const styles = {
         borderColor: colors.lineColorDark,
     },
     countryTextContainer:{
-        
-    },
-    countryText:{
         width: '60%',
         justifyContent: 'center',
+    },
+    countryText:{
         paddingLeft: 10,
         fontSize: 16,
         color: colors.lineColorDark,

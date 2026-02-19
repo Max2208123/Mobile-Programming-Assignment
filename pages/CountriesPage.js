@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { View , Text, Pressable, TextInput, Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -13,7 +14,8 @@ export default function CountriesPage(){
     const [textElements, setTextElements] = useState([])
 
 
-
+    const navigation = useNavigation();
+    
     /*
     const getFlag = async (link) => {
         try{
@@ -59,6 +61,14 @@ export default function CountriesPage(){
                     <View style={styles.countryButtonContainer}>
                         <Pressable 
                             style={styles.countryButtonPressable}
+                            onPress = {() => {
+                                if (element.latlng && element.latlng.length >= 2){
+                                    navigation.navigate('Map', {
+                                        latitude: element.latlng[0],
+                                        longitude: element.latlng[1],
+                                    });
+                                }
+                            }}
                         >
                             <Ionicons
                                 style={styles.countryIcon}
