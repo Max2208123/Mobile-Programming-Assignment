@@ -148,8 +148,8 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
 
                                     const result = await geocodeAsync(text);
                                     if (result && result.length > 0){
-                                            setLongitude(result[0].longitude.toString().slice(0,10));
-                                            setLatitude(result[0].latitude.toString().slice(0,10));
+                                            setLongitude(parseFloat(result[0].longitude.toString().slice(0,10)));
+                                            setLatitude(parseFloat(result[0].latitude.toString().slice(0,10)));
                                     } 
                                 }catch (e) {
                                     console.log("An error occured while setting the Location:", e)
@@ -197,7 +197,7 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
                        <View style = {styles.coordinationInputContainerLeft}>
                             <TextInput
                                 style = {styles.coordinationInput}
-                                value = {latitude}
+                                value = {latitude.toString()}
                                 onChangeText={(text) => {
                                     const sanitizedText = text.replace(/[^0-9.,\-]/g,'');
                                     setLatitude(sanitizedText);
@@ -210,7 +210,7 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
                         <View style = {styles.coordinationInputContainerRight}>
                             <TextInput
                                 style = {styles.coordinationInput}
-                                value = {longitude}
+                                value = {longitude.toString()}
                                 onChangeText={(text) => {
                                     const sanitizedText = text.replace(/[^0-9.,\-]/g,'');
                                     setLongitude(sanitizedText);

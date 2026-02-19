@@ -15,8 +15,8 @@ const handleNavigation = (item, navigation, delta) => {
         console.log(item.latitude)
         console.log(item.longitude)
         navigation.navigate('Map', {
-            latitude: parseFloat(item.latitude),
-            longitude: parseFloat(item.longitude),
+            latitude: item.latitude,
+            longitude: item.longitude,
             delta: delta,
         });
     }
@@ -65,7 +65,7 @@ const FlatListElement = ({item, setLoading, setLocations, styles, DesignConfig, 
                             />
                         </View>
                         <View style = {styles.pressableContainer}>
-                            <Pressable onPress = {() => handleNavigation(item, navigation, [2,2])} style = {{borderWidth: 1}}>
+                            <Pressable onPress = {() => handleNavigation(item, navigation, [2,2])} >
                                 <Ionicons name = 'location' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
                             </Pressable>
                             <Pressable onPress = {onEditPress}>

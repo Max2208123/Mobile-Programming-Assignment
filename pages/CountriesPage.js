@@ -120,7 +120,7 @@ export default function CountriesPage(){
                     </View>
                     
                 </View>
-                <ScrollView>
+                <ScrollView style= {styles.countryScrollView}>
                     {textElements}
                 </ScrollView>
             </View>

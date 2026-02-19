@@ -64,7 +64,6 @@ export const styles = {
     },
     starSelectorContainer:{
         justiyContent: 'center',
-        borderWidth: 1,
         height: '100%',
     },
     textContainer:{
@@ -95,7 +94,6 @@ export const styles = {
         justifyContent: 'flex-end',
         alignItems: 'center',
         width: '20%',
-        borderWidth:1,
         height: '100%',
     },
     addLocationMask:{
@@ -225,7 +223,6 @@ export const styles = {
     pageHeaderLineHeaderContainer:{
         width: '35%',
         justifyContent: 'center',
-        borderWidth:1,
     },
     pageHeaderLineSearchbarContainer:{
         width: '65%',
@@ -233,7 +230,6 @@ export const styles = {
         justifyContent: 'flex-end',
         alignItems: 'center',
         marginRight: 5,
-        borderWidth: 1,
     },
     searchBarContainer:{
         marginTop: 4,
@@ -255,6 +251,15 @@ export const styles = {
     searchBarIcon:{
         width: '15%',
     },
+    countryScrollView:{
+        borderWidth:1,
+        borderColor: colors.lineColorDark,
+        borderRadius: 35,
+        backgroundColor: colors.backgroundScreen,
+        paddingTop: 5,
+        paddingLeft: 5,
+        paddingRight: 5,        
+    },
     countryItemContainer:{
         width: '100%',
         flexDirection:'row',
@@ -262,13 +267,20 @@ export const styles = {
         alignItems: 'center',
         height: 60,
         borderWidth: 1,
+        
+        marginBottom: 5,
+        borderRadius: 30,
+        backgroundColor: colors.backgroundItem,
+        borderColor: colors.lineColorDark,
     },
     countryFlagContainerWidth:{
         width: '20%',
         height: 60,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'left',
         paddingBottom: 2,
+        paddingLeft: 4,
+        
     },
     countryFlagSizeContainer:{
         width: 52,
