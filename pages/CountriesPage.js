@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { styles, DesignConfig } from '../styling/styles';
 import { colors } from '../styling/colors';
+import Header from '../components/Header';
 
 
 export default function CountriesPage(){
@@ -91,12 +92,15 @@ export default function CountriesPage(){
     }
 
     return(
-        <View style = {styles.componentContainer}>
+        <View style = {styles.countriesTopLevelContainer}>
+            <Header
+                title = 'Countries'
+            />
             <View style = {styles.flatListContainer}>
                 <View style = {styles.pageHeaderInactive}>
                     <View style = {styles.pageHeaderLineBox}>
                         <View style = {styles.pageHeaderLineHeaderContainer}>
-                            <Text style = {styles.headerText}>Countries</Text>
+                            <Text style = {styles.headerText}>Find Country:</Text>
                         </View>
                         <View style = {styles.pageHeaderLineSearchbarContainer}> 
                             <View style = {styles.searchBarContainer}>

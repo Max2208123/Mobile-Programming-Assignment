@@ -44,7 +44,8 @@ export default function FooterMenu({pages, colorActive, colorInactive}){
         <Tab.Navigator
             screenOptions={{
                 tabBarActiveTintColor: colorActive,
-                tabBarInactiveTintColor: colorInactive
+                tabBarInactiveTintColor: colorInactive,
+                headerShown: false,
             }}
         >
             {createNavigatorItems({pages})}   

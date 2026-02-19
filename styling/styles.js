@@ -1,6 +1,13 @@
 import { colors } from "./colors";
-
+import {Dimensions} from 'react-native'
 export const styles = {
+    viewTopLevelContainer:{
+        alignItems: 'center',
+        backgroundColor: colors.backgroundScreen,
+        height: '100%',
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
     pageHeaderActive: {
         borderWidth: 1,
         borderRadius: 5,
@@ -29,7 +36,7 @@ export const styles = {
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        marginRight: 5
+        marginRight: 5,
     },
     pressableHeader: {
         alignItems: 'flex-end', 
@@ -41,17 +48,20 @@ export const styles = {
     },
     flatListContainer:{
         alignItems: 'center',
-        margin: 20,        
+        marginTop: 10,        
         padding: 10,
         borderRadius: 10,
         borderColor: colors.lineColorDark,
         backgroundColor: colors.backgroundItem,
         borderWidth: 1,
         borderColor: colors.lineColorDark,
-        
+        height: '85%',
     },
-    componentContainer:{
+    countriesTopLevelContainer:{
         backgroundColor: colors.backgroundScreen,
+        height: '100%',
+        paddingLeft: 20,
+        paddingRight: 20,
     },    
     flatListElementContainer:{
         borderTopWidth: 1,
@@ -221,11 +231,11 @@ export const styles = {
         marginBottom: 10,
     },
     pageHeaderLineHeaderContainer:{
-        width: '35%',
+        width: '45%',
         justifyContent: 'center',
     },
     pageHeaderLineSearchbarContainer:{
-        width: '65%',
+        width: '55%',
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
@@ -258,7 +268,9 @@ export const styles = {
         backgroundColor: colors.backgroundScreen,
         paddingTop: 5,
         paddingLeft: 5,
-        paddingRight: 5,        
+        paddingRight: 5, 
+        height: '89%',
+        width: '100%'       
     },
     countryItemContainer:{
         width: '100%',
@@ -322,6 +334,72 @@ export const styles = {
         alignItems: 'center',
     },
     countryIcon:{
+
+    },
+    mapTopLevelContainer:{
+        alignItems: 'center',
+        backgroundColor: colors.backgroundScreen,
+        height: '100%',
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+    mapOuterContainer:{
+        width: '100%',
+        height: '75%',
+        marginBottom: 10,
+        
+    },
+    mapContainer:{
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: colors.lineColorDark,
+        borderRadius: 10, 
+        overflow:'hidden',
+        
+    },
+    map:{
+        width: '100%',
+        height: '100%',        
+    },
+
+    headerContainer:{
+        marginTop: 40,
+        width: '100%',
+        alignItems: 'left',
+        flexDirection: 'row',
+    },
+    headerTextContainer:{
+        width: '55%',
+        justifyContent:'center',
+    },
+    headerText:{
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: colors.lineColorDark,
+    },
+    headerButtonContainer:{
+        width: '50%',
+        justifyContent: 'center',
+        borderWidth: 1,
+        alignItems: 'right',
+    },
+    headerPressable:{
+
+    },
+    buttonIcon:{
+        borderColor: colors.backgroundScreen,
+        marginLeft: 5
+    },
+    header2Text:{
+        fontSize: 16,
+        color: colors.lineColorDark,
+        fontWeight: 'bold',
+        textAlign: 'left',
+        width: '100%',
+        padding: 20,
 
     },
 };
