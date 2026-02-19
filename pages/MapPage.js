@@ -8,7 +8,21 @@ import { styles , DesignConfig} from '../styling/styles.js';
 import { getFirestore, collection, addDoc , query, where, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Header from '../components/Header.js';
+import Button from '../components/Button.js';
+import { useNavigation } from '@react-navigation/native';
 
+
+const handleAddLocation = (navigation) => {
+    navigation.navigate('Locations', {
+        addingLocation: true,
+    });
+};
+
+const handleFindCountry = (navigation) => {
+    navigation.navigate('Countries', {
+        findingCountry: true,
+    });
+};
 
 export default function MapPage({ route }){
 
@@ -21,6 +35,8 @@ export default function MapPage({ route }){
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
     const mapRef = useRef(null)
+
+    const navigation = useNavigation();
 
     useFocusEffect(
         useCallback(() => {
@@ -82,13 +98,26 @@ export default function MapPage({ route }){
                 </View>
                 
             </View>
-            <View style = {{flexDirection: 'row', width: '100%', borderWidth:1,}}>
-                <View>
-
+            <View style = {{flexDirection: 'row', width: '100%'}}>
+                <View style = {{width: '50%', justifyContent:'flex-start', flexDirection: 'row'}}>
+                    <View>
+                        <Button
+                            text = 'Find Country'
+                            iconName = 'flag-outline'
+                            onPressFunction={() => {handleFindCountry(navigation)}}                    
+                        />
+                    </View>
                 </View>
-                <View>
-
+                <View style = {{width: '50%', justifyContent:'flex-end', flexDirection: 'row'}}>
+                    <View>
+                        <Button
+                            text = 'Add Location'
+                            iconName = 'add'
+                            onPressFunction={() => {handleAddLocation(navigation)}}
+                        />
+                    </View>
                 </View>
+                
             </View>
         </View>
     )

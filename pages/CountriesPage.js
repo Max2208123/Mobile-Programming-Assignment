@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState , useEffect} from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View , Text, Pressable, TextInput, Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,7 +8,7 @@ import { colors } from '../styling/colors';
 import Header from '../components/Header';
 
 
-export default function CountriesPage(){
+export default function CountriesPage({route}){
 
     const [searching, setSearching] = useState('');
     const [data, setData] = useState('');
@@ -16,7 +16,7 @@ export default function CountriesPage(){
 
 
     const navigation = useNavigation();
-    
+    const inputRef = useRef(null)
     /*
     const getFlag = async (link) => {
         try{
@@ -24,6 +24,15 @@ export default function CountriesPage(){
         }
     }
     */
+    useEffect(() => {
+        if (route.params?.findingCountry){
+            const {findingCountry} = route.params;
+            if (findingCountry){
+                inputRef.current.focus();
+            }
+        }
+    }, [route.params])
+
 
     const handleSearchChange = async (text) => {
         try{
@@ -110,6 +119,7 @@ export default function CountriesPage(){
                                         onChangeText = {text => handleSearchChange(text)}
                                         placeholder = 'Search'
                                         style = {styles.searchBarTextField}
+                                        ref = {inputRef}
                                     />
                                     <Ionicons
                                         name = 'search'

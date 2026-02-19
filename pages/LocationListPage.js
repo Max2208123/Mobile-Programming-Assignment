@@ -16,7 +16,9 @@ import AddLocationMask from '../components/AddLocationMask.js';
 import StarSelector from '../components/StarSelector.js';
 import FlatListElement from '../components/FlatListElement.js';
 import Header from '../components/Header.js';
-export default function LocationListPage(){
+
+
+export default function LocationListPage({route}){
 
     const db = getFirestore();
     const auth = getAuth();
@@ -29,6 +31,15 @@ export default function LocationListPage(){
     useEffect(() => {
         loadMyLocations(setLoading, setLocations);
     }, [] );
+
+    useEffect(() => {
+        if (route.params?.addingLocation){
+            const {addingLocation} = route.params;
+            if (addingLocation){
+                setActiveAction({type:'add'})
+            }
+        }
+    }, [route.params])
 
     const DesignConfig = {
         icon: {

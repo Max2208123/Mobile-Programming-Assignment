@@ -53,7 +53,6 @@ export const styles = {
         borderRadius: 10,
         borderColor: colors.lineColorDark,
         backgroundColor: colors.backgroundItem,
-        borderWidth: 1,
         borderColor: colors.lineColorDark,
         height: '85%',
     },
@@ -75,6 +74,8 @@ export const styles = {
     starSelectorContainer:{
         justiyContent: 'center',
         height: '100%',
+        alignItems: 'center',
+        flexDirection: 'row',
     },
     textContainer:{
         width: '50%',
@@ -96,7 +97,7 @@ export const styles = {
     starContainer: {
         flexDirection: 'row',
         width: '30%',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
     },
 
     pressableContainer:{
@@ -145,8 +146,9 @@ export const styles = {
             fontWeight: 'bold',
         },
         starSelector:{
-            marginTop: 10,
             alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row'
         },
         errorText:{
             color: colors.errorRed,
