@@ -62,9 +62,13 @@ export const styles = {
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
- 
+    starSelectorContainer:{
+        justiyContent: 'center',
+        borderWidth: 1,
+        height: '100%',
+    },
     textContainer:{
-        width: '55%',
+        width: '50%',
         paddingRight: '5%',
     },
     headerText:{
@@ -90,7 +94,9 @@ export const styles = {
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        width: '15%',
+        width: '20%',
+        borderWidth:1,
+        height: '100%',
     },
     addLocationMask:{
         componentContainer:{
@@ -117,7 +123,9 @@ export const styles = {
             alignItems: 'end',
             paddingLeft: 5,
         },
+
         middleLineContainer:{
+
         },  
         descriptionInput:{
             borderBottomWidth:1,
@@ -141,6 +149,36 @@ export const styles = {
         inputHeaderTopline:{
             flexDirection:'row',
             width: '100%'
+        },
+        coordinationInputContainer:{
+            flexDirection: 'row',
+            width: '100%',
+        },
+        coordinationInputContainerLeft:{
+            width: '45%',
+        },
+        coordinationInputContainerMiddle:{
+            width: '10%',
+        },
+        coordinationInputContainerRight:{
+            width: '45%',
+
+        },
+        header3Text:{
+            color: colors.lineColorDark,
+            fontWeight: 'bold',
+            width: '23%',
+        },
+        error3Text:{
+            color: colors.errorRed,
+            textAlign: 'right',
+            width: '22%',
+            paddingRight: 5,
+        },
+        coordinationInput:{
+            padding:5,
+            margin: 5,
+            borderBottomWidth: 1,
         },
 
         bottomLineContainer:{

@@ -66,6 +66,7 @@ export default function CountriesPage(){
                                     navigation.navigate('Map', {
                                         latitude: element.latlng[0],
                                         longitude: element.latlng[1],
+                                        delta: [20,20],
                                     });
                                 }
                             }}

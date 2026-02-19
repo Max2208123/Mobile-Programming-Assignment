@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import {View, Pressable, Text} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
@@ -8,9 +9,24 @@ import deleteLocation from '../functions/deleteLocation';
 import StarSelector from './StarSelector';
 import AddLocationMask from './AddLocationMask';
 
+const handleNavigation = (item, navigation, delta) => {
+    
+    if (item.latitude && item.longitude){
+        console.log(item.latitude)
+        console.log(item.longitude)
+        navigation.navigate('Map', {
+            latitude: parseFloat(item.latitude),
+            longitude: parseFloat(item.longitude),
+            delta: delta,
+        });
+    }
+}
+
 const FlatListElement = ({item, setLoading, setLocations, styles, DesignConfig, isEditing, onEditPress, onCancel}) => {
     
     const [getsEdited, setGetsEdited] = useState(false)
+
+    const navigation = useNavigation();
 
     return(
         <View>
@@ -26,7 +42,9 @@ const FlatListElement = ({item, setLoading, setLocations, styles, DesignConfig, 
                         mode = 'edit'
                         startTitle = {item.name}
                         startRating = {item.rating}
-                        startDescription= {item.description}
+                        startDescription = {item.description}
+                        startLatitude = {item.latitude}
+                        startLongitude = {item.longitude}
                         setGetsEdited={onCancel}
                         item = {item}
                     /> 
@@ -37,14 +55,19 @@ const FlatListElement = ({item, setLoading, setLocations, styles, DesignConfig, 
                         <View style = {styles.textContainer}>
                             <Text style = {styles.headerText}>{item.name}</Text>
                         </View>
-                        <StarSelector
-                            setVariable = {() => {return}}
-                            designConfig= {DesignConfig}
-                            style = {styles.addLocationMask.starSelector}
-                            startRating = {item.rating}
-                            editable = {false}
-                        />
+                        <View style = {styles.starSelectorContainer}>
+                            <StarSelector
+                                setVariable = {() => {return}}
+                                designConfig= {DesignConfig}
+                                style = {styles.addLocationMask.starSelector}
+                                startRating = {item.rating}
+                                editable = {false}
+                            />
+                        </View>
                         <View style = {styles.pressableContainer}>
+                            <Pressable onPress = {() => handleNavigation(item, navigation, [2,2])} style = {{borderWidth: 1}}>
+                                <Ionicons name = 'location' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
+                            </Pressable>
                             <Pressable onPress = {onEditPress}>
                                 <Ionicons name = 'settings' size = {DesignConfig.icon.size} color = {DesignConfig.icon.color}/>
                             </Pressable>

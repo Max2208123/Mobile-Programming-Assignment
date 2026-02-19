@@ -10,13 +10,13 @@ export default function MapPage({ route }){
     const mapRef = useRef(null)
 
     useEffect(() => {
-        if (route.params?.latitude && route.params?.longitude) {
-            const { latitude, longitude} = route.params;
+        if (route.params?.latitude && route.params?.longitude && route.params?.delta) {
+            const { latitude, longitude, delta} = route.params;
             mapRef.current.animateToRegion({
                 latitude: latitude,
                 longitude: longitude,
-                latitudeDelta: 20,
-                longitudeDelta: 20,
+                latitudeDelta: delta[0],
+                longitudeDelta: delta[1],
             }, 1000)
         }
     }, [route.params])

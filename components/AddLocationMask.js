@@ -1,18 +1,20 @@
 import React, {useState, useContext, createContext} from "react";
 import { Pressable, StyleSheet, TextInput, View, Text } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-
+import { geocodeAsync , requestForegroundPermissionsAsync } from 'expo-location';
 import StarSelector from "./StarSelector.js";
 import { colors } from "../styling/colors.js";
 
 import addLocation from "../functions/addLocation.js";
 import editLocation from "../functions/editLocation.js";
 
-const handleAdding = async (title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, setLoading, setLocations, setAddingEntry) => {
+const handleAdding = async (title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, latitude, setLatitudeErrorMessage, longitude, setLongitudeErrorMessage, setLoading, setLocations, setAddingEntry) => {
 
     setTitleErrorMessage('');
     setRatingErrorMessage('');
     setDescriptionErrorMessage('');
+    setLongitudeErrorMessage('');
+    setLatitudeErrorMessage('');
 
     if (title.length < 3){
         setTitleErrorMessage('Title too short (min. 3)');
@@ -25,14 +27,30 @@ const handleAdding = async (title, setTitleErrorMessage, rating, setRatingErrorM
         return;
     } else if (rating > 5) {
         return;
-    };
-    addLocation(title, description, rating, setLoading, setLocations);
+    } else if (longitude == '' || latitude == ''){
+        if(longitude == ''){
+            setLongitudeErrorMessage('required')
+        }
+        if(latitude == ''){
+            setLatitudeErrorMessage('required')
+        }
+        return;
+    } else if (longitude > 180 || longitude < -180 || latitude > 90 || latitude < -90){
+        if(longitude > 180 || longitude < -180){
+            setLongitudeErrorMessage('does not exist')
+        }
+        if(latitude > 180 || latitude < -180){
+            setLatitudeErrorMessage('does not exist')
+        }
+        return;
+    }
+    addLocation(title, description, rating, latitude, longitude, setLoading, setLocations);
     setAddingEntry(false);
     return;
 
 };
 
-const handleEditing = async (title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, setLoading, setLocations, setGetsEdited, item) => {
+const handleEditing = async (title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, latitude, setLatitudeErrorMessage, longitude, setLongitudeErrorMessage, setLoading, setLocations, setGetsEdited, item) => {
     setTitleErrorMessage('');
     setRatingErrorMessage('');
     setDescriptionErrorMessage('');
@@ -48,24 +66,46 @@ const handleEditing = async (title, setTitleErrorMessage, rating, setRatingError
         return;
     } else if (rating > 5) {
         return;
+    } else if (longitude == '' || latitude == ''){
+        if(longitude == ''){
+            setLongitudeErrorMessage('required')
+        }
+        if(latitude == ''){
+            setLatitudeErrorMessage('required')
+        }
+        return;
+    } else if (longitude > 180 || longitude < -180 || latitude > 90 || latitude < -90){
+        if(longitude > 180 || longitude < -180){
+            setLongitudeErrorMessage('does not exist')
+        }
+        if(latitude > 180 || latitude < -180){
+            setLatitudeErrorMessage('does not exist')
+        }
+        return;
     };
-    editLocation(title, description, rating, setLoading, setLocations, item);
+    editLocation(title, description, rating, latitude, longitude, setLoading, setLocations, item);
     setGetsEdited(false);
 
     return;
 }
 
-export default function AddLocationMask({designConfig, styles, setLoading, setLocations, setAddingEntry, mode = 'add' , startTitle = '', startRating = 0, startDescription = '', setGetsEdited, item = 'header'}) {
+export default function AddLocationMask({designConfig, styles, setLoading, setLocations, setAddingEntry, mode = 'add' , startTitle = '', startRating = 0, startLatitude='', startLongitude='', startDescription = '', setGetsEdited, item = 'header'}) {
 
     const [rating, setRating] = useState(startRating);
     const [title, setTitle] = useState(startTitle);
     const [description, setDescription] = useState(startDescription);
+    const [latitude, setLatitude] = useState(startLatitude);    
+    const [longitude, setLongitude] = useState(startLongitude);
 
-    console.log(rating)
+
     // Error Messages:
     const [titleErrorMessage, setTitleErrorMessage] = useState('');
     const [ratingErrorMessage, setRatingErrorMessage] = useState('');
     const [descriptionErrorMessage, setDescriptionErrorMessage] = useState('');
+    const [latitudeErrorMessage, setLatitudeErrorMessage] = useState('');
+    const [longitudeErrorMessage, setLongitudeErrorMessage] = useState('');
+
+
 
     return(
         <View>
@@ -98,10 +138,27 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
                         <TextInput
                             style = {styles.titleInput}
                             value = {title}
-                            onChangeText = {setTitle}
+                            onChangeText =  {setTitle}
+                            onEndEditing = {async (e) => {
+                                const text = e.nativeEvent.text;
+                                
+                                try {
+                                    const {status}= await requestForegroundPermissionsAsync();
+                                    if (status !== 'granted') return;
+
+                                    const result = await geocodeAsync(text);
+                                    if (result && result.length > 0){
+                                            setLongitude(result[0].longitude.toString().slice(0,10));
+                                            setLatitude(result[0].latitude.toString().slice(0,10));
+                                    } 
+                                }catch (e) {
+                                    console.log("An error occured while setting the Location:", e)
+                                }
+                            }}
                             placeholder = 'Add Location Title'
                         />
                     </View>
+                    
                     <View style = {styles.ratingInputContainer}>
                         <View style = {styles.inputHeaderTopline}>
                             <Text style = {styles.header2Text}>Rating:</Text>
@@ -128,6 +185,42 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
                         placeholder="Add Location Description"
                     />
                 </View>
+                <View style = {styles.middleLineContainer}>
+                    <View style = {styles.inputHeaderTopline}>                        
+                        <Text style = {styles.header3Text}>Latitude:</Text>
+                        <Text style = {styles.error3Text}>{latitudeErrorMessage}</Text>
+                        <View style = {styles.coordinationInputContainerMiddle}></View>
+                        <Text style = {styles.header3Text}>Longitude:</Text>
+                        <Text style = {styles.error3Text}>{longitudeErrorMessage}</Text>
+                    </View>
+                    <View style = {styles.coordinationInputContainer}>
+                       <View style = {styles.coordinationInputContainerLeft}>
+                            <TextInput
+                                style = {styles.coordinationInput}
+                                value = {latitude}
+                                onChangeText={(text) => {
+                                    const sanitizedText = text.replace(/[^0-9.,\-]/g,'');
+                                    setLatitude(sanitizedText);
+                                }}
+                                keyboardType='decimal-pad'
+                            />
+                        </View>
+                        <View style = {styles.coordinationInputContainerMiddle}>
+                        </View>
+                        <View style = {styles.coordinationInputContainerRight}>
+                            <TextInput
+                                style = {styles.coordinationInput}
+                                value = {longitude}
+                                onChangeText={(text) => {
+                                    const sanitizedText = text.replace(/[^0-9.,\-]/g,'');
+                                    setLongitude(sanitizedText);
+                                }}
+                                keyboardType='decimal-pad'
+                            />
+                        </View> 
+                    </View>
+                    
+                </View>
                 <View style = {styles.bottomLineContainer}>
                     <Pressable onPress = {() => {
                         if (mode === 'add'){
@@ -138,6 +231,10 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
                                 setRatingErrorMessage,
                                 description,
                                 setDescriptionErrorMessage,
+                                latitude,
+                                setLatitudeErrorMessage,
+                                longitude,
+                                setLongitudeErrorMessage,
                                 setLoading,
                                 setLocations,
                                 setAddingEntry
@@ -149,6 +246,10 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
                                 setRatingErrorMessage,
                                 description,
                                 setDescriptionErrorMessage,
+                                latitude,
+                                setLatitudeErrorMessage,
+                                longitude,
+                                setLongitudeErrorMessage,
                                 setLoading,
                                 setLocations,
                                 setGetsEdited,

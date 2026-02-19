@@ -3,7 +3,7 @@ import { getFirestore , collection , addDoc, updateDoc, doc} from "firebase/fire
 import { getAuth } from "firebase/auth";
 import loadMyLocations from "./loadMyLocations.js";
 
-const editLocation = async (locationName, description, rating, setLoading, setLocations, item) => {
+const editLocation = async (locationName, description, rating, latitude, longitude, setLoading, setLocations, item) => {
 
     const db = getFirestore();
     const auth = getAuth();
@@ -20,6 +20,8 @@ const editLocation = async (locationName, description, rating, setLoading, setLo
             description: description,
             userId: user.uid,
             rating: rating,
+            latitude: latitude,
+            longitude: longitude,
         })
         console.log("Saved");
         loadMyLocations(setLoading, setLocations)
