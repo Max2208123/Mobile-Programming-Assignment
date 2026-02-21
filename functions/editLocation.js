@@ -19,9 +19,9 @@ const editLocation = async (locationName, description, rating, latitude, longitu
             name: locationName,
             description: description,
             userId: user.uid,
-            rating: rating,
-            latitude: latitude,
-            longitude: longitude,
+            rating: parseFloat(rating),
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude),
         })
         console.log("Saved");
         loadMyLocations(setLoading, setLocations)

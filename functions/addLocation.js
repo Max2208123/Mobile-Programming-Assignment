@@ -24,9 +24,9 @@ const addLocation = async (locationName, description, rating, latitude, longitud
             description: description,
             userId: user.uid,
             createdAt: new Date(),
-            rating: rating,
-            latitude: latitude,
-            longitude: longitude,
+            rating: parseFloat(rating),
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude),
         })
         console.log("Saved");
         loadMyLocations(setLoading, setLocations);
