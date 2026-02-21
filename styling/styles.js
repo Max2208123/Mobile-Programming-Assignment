@@ -1,5 +1,6 @@
 import { colors } from "./colors";
 import {Dimensions} from 'react-native'
+
 export const styles = {
     viewTopLevelContainer:{
         alignItems: 'center',
@@ -347,7 +348,7 @@ export const styles = {
     },
     mapOuterContainer:{
         width: '100%',
-        height: '75%',
+        height: '70%',
         marginBottom: 10,
         
     },
@@ -408,7 +409,7 @@ export const styles = {
 
 export const DesignConfig = {
     icon: {
-        size: 20,
+        size: 17,
         color: colors.backgroundAccent,
         alternativeColor: colors.backgroundScreen,
     }

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { getFirestore, collection, addDoc , query, where, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { View , ScrollView, Text, Button, ActivityIndicator, FlatList, Pressable, StyleSheet } from 'react-native';
+import { View , ScrollView, Text, Button, ActivityIndicator, FlatList, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import loadMyLocations from '../functions/loadMyLocations';
@@ -10,7 +10,7 @@ import deleteLocation from '../functions/deleteLocation.js';
 import editLocation from '../functions/editLocation.js';
 
 import {colors} from '../styling/colors.js';
-import {styles} from '../styling/styles.js';
+import {styles, DesignConfig} from '../styling/styles.js';
 
 import AddLocationMask from '../components/AddLocationMask.js';
 import StarSelector from '../components/StarSelector.js';
@@ -41,12 +41,6 @@ export default function LocationListPage({route}){
         }
     }, [route.params])
 
-    const DesignConfig = {
-        icon: {
-            size: 20,
-            color: colors.lineColorDark
-        }
-    }
 
     const renderHeader = () => (
         <View style = {activeAction?.type === 'add' ? styles.pageHeaderActive : styles.pageHeaderInactive}>
@@ -56,7 +50,7 @@ export default function LocationListPage({route}){
                 </View>
                 <View style = {styles.flatListHeaderPressable}>
                     <Pressable onPress={() => {
-                        setActiveAction(activeAction?.type === 'add' ? null : {type:'add'})
+                        setActiveAction(activeAction?.type === 'add' ? null : {type:'add'});
                     }}>
                         {activeAction?.type === 'add' ? (
                             <View style = {styles.addLocationMask.buttonContainer}>

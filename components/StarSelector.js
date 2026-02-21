@@ -11,7 +11,7 @@ function Star({position, currentRating, onPress, designConfig}){
         iconName = 'star-half';
     }
 
-    const size = designConfig?.icon?.size || 20;
+    const size = designConfig?.icon?.size || 10;
     const color = designConfig?.icon?.color || 'red';
     return (
         <Pressable onPress = {() => {

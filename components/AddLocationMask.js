@@ -8,8 +8,8 @@ import { colors } from "../styling/colors.js";
 import addLocation from "../functions/addLocation.js";
 import editLocation from "../functions/editLocation.js";
 
-const handleAdding = async (title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, latitude, setLatitudeErrorMessage, longitude, setLongitudeErrorMessage, setLoading, setLocations, setAddingEntry) => {
-
+const testInputs = (title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, latitude, setLatitudeErrorMessage, longitude, setLongitudeErrorMessage) => {
+    
     setTitleErrorMessage('');
     setRatingErrorMessage('');
     setDescriptionErrorMessage('');
@@ -18,15 +18,15 @@ const handleAdding = async (title, setTitleErrorMessage, rating, setRatingErrorM
 
     if (title.length < 3){
         setTitleErrorMessage('Title too short (min. 3)');
-        return;
+        return false;
     } else if (title.length > 20){
         setTitleErrorMessage('Title too long (max. 20)');
-        return;
+        return false;
     } else if (rating < 1) {
         setRatingErrorMessage('Choose a Rating');
-        return;
+        return false;
     } else if (rating > 5) {
-        return;
+        return false;
     } else if (longitude == '' || latitude == ''){
         if(longitude == ''){
             setLongitudeErrorMessage('required')
@@ -34,7 +34,7 @@ const handleAdding = async (title, setTitleErrorMessage, rating, setRatingErrorM
         if(latitude == ''){
             setLatitudeErrorMessage('required')
         }
-        return;
+        return false;
     } else if (longitude > 180 || longitude < -180 || latitude > 90 || latitude < -90){
         if(longitude > 180 || longitude < -180){
             setLongitudeErrorMessage('does not exist')
@@ -42,51 +42,38 @@ const handleAdding = async (title, setTitleErrorMessage, rating, setRatingErrorM
         if(latitude > 180 || latitude < -180){
             setLatitudeErrorMessage('does not exist')
         }
-        return;
+        return false;
     }
-    addLocation(title, description, rating, latitude, longitude, setLoading, setLocations);
-    setAddingEntry(false);
-    return;
+    return true;
+}
+
+const handleAdding = async (title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, latitude, setLatitudeErrorMessage, longitude, setLongitudeErrorMessage, setLoading, setLocations, setAddingEntry) => {
+    
+    const correct = testInputs(title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, latitude, setLatitudeErrorMessage, longitude, setLongitudeErrorMessage)
+    console.log(correct)
+    if (correct){
+        addLocation(title, description, rating, latitude, longitude, setLoading, setLocations);
+        setAddingEntry(false);
+        return;
+    } else {
+        return
+    }
+
+    
 
 };
 
 const handleEditing = async (title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, latitude, setLatitudeErrorMessage, longitude, setLongitudeErrorMessage, setLoading, setLocations, setGetsEdited, item) => {
-    setTitleErrorMessage('');
-    setRatingErrorMessage('');
-    setDescriptionErrorMessage('');
-
-    if (title.length < 3){
-        setTitleErrorMessage('Title too short (min. 3)');
+    
+    const correct = testInputs(title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, latitude, setLatitudeErrorMessage, longitude, setLongitudeErrorMessage)
+    if (correct) {
+        editLocation(title, description, rating, latitude, longitude, setLoading, setLocations, item);
+        setGetsEdited(false);
         return;
-    } else if (title.length > 20){
-        setTitleErrorMessage('Title too long (max. 20)');
+    } else {
         return;
-    } else if (rating < 1) {
-        setRatingErrorMessage('Choose a Rating');
-        return;
-    } else if (rating > 5) {
-        return;
-    } else if (longitude == '' || latitude == ''){
-        if(longitude == ''){
-            setLongitudeErrorMessage('required')
-        }
-        if(latitude == ''){
-            setLatitudeErrorMessage('required')
-        }
-        return;
-    } else if (longitude > 180 || longitude < -180 || latitude > 90 || latitude < -90){
-        if(longitude > 180 || longitude < -180){
-            setLongitudeErrorMessage('does not exist')
-        }
-        if(latitude > 180 || latitude < -180){
-            setLatitudeErrorMessage('does not exist')
-        }
-        return;
-    };
-    editLocation(title, description, rating, latitude, longitude, setLoading, setLocations, item);
-    setGetsEdited(false);
-
-    return;
+    }
+    
 }
 
 export default function AddLocationMask({designConfig, styles, setLoading, setLocations, setAddingEntry, mode = 'add' , startTitle = '', startRating = 0, startLatitude='', startLongitude='', startDescription = '', setGetsEdited, item = 'header'}) {
@@ -212,7 +199,7 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
                                 style = {styles.coordinationInput}
                                 value = {longitude.toString()}
                                 onChangeText={(text) => {
-                                    const sanitizedText = text.replace(/[^0-9.,\-]/g,'');
+                                    const sanitizedText = parseFloat(text.replace(/[^0-9.,\-]/g,''));
                                     setLongitude(sanitizedText);
                                 }}
                                 keyboardType='decimal-pad'

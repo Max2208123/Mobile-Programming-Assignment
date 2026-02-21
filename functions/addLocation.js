@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { getFirestore , collection , addDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import loadMyLocations from "./loadMyLocations.js";
+import { Dimensions } from 'react-native';
 
 
 const addLocation = async (locationName, description, rating, latitude, longitude, setLoading, setLocations) => {
@@ -17,6 +18,7 @@ const addLocation = async (locationName, description, rating, latitude, longitud
     }
 
     try {
+        console.log("Success");
         await addDoc(collection(db, "locations"), {
             name: locationName,
             description: description,
