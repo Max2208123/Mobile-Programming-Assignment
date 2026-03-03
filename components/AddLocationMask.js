@@ -1,5 +1,5 @@
-import React, {useState, useContext, createContext} from "react";
-import { Pressable, StyleSheet, TextInput, View, Text } from "react-native";
+import React, {useState } from "react";
+import { Pressable, TextInput, View, Text } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { geocodeAsync , requestForegroundPermissionsAsync } from 'expo-location';
 import StarSelector from "./StarSelector.js";
@@ -84,8 +84,6 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
     const [latitude, setLatitude] = useState(startLatitude);    
     const [longitude, setLongitude] = useState(startLongitude);
 
-
-    // Error Messages:
     const [titleErrorMessage, setTitleErrorMessage] = useState('');
     const [ratingErrorMessage, setRatingErrorMessage] = useState('');
     const [descriptionErrorMessage, setDescriptionErrorMessage] = useState('');
@@ -255,7 +253,6 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
                                 style = {styles.buttonIcon}
                             /> 
                         </View>
-                        
                     </Pressable>
                 </View>
             </View>

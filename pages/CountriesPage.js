@@ -4,7 +4,6 @@ import { View , Text, Pressable, TextInput, Image, ScrollView } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 
 import { styles, DesignConfig } from '../styling/styles';
-import { colors } from '../styling/colors';
 import Header from '../components/Header';
 
 
@@ -17,13 +16,7 @@ export default function CountriesPage({route}){
 
     const navigation = useNavigation();
     const inputRef = useRef(null)
-    /*
-    const getFlag = async (link) => {
-        try{
-            const URL = 
-        }
-    }
-    */
+
     useEffect(() => {
         if (route.params?.findingCountry){
             const {findingCountry} = route.params;

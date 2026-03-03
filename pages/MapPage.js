@@ -5,7 +5,7 @@ import MapView, {Marker} from 'react-native-maps';
 import handleLogout from '../functions/handleLogout';
 import loadMyLocations from '../functions/loadMyLocations';
 import { styles , DesignConfig} from '../styling/styles.js';
-import { getFirestore, collection, addDoc , query, where, getDocs } from "firebase/firestore";
+import { getFirestore} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import Header from '../components/Header.js';
 import Button from '../components/Button.js';
@@ -31,7 +31,6 @@ export default function MapPage({ route }){
 
     const user = auth.currentUser;
     const userName = (user.email).split('@')[0]
-    // const {loggedIn, setLoggedIn, loggedInUser, setLoggedInUser} = useContext(UserContext) 
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
     const mapRef = useRef(null)
@@ -73,8 +72,8 @@ export default function MapPage({ route }){
                         style={[styles.map]}
                         ref = {mapRef}
                         initialRegion={{
-                            latitude: 65.0445,
-                            longitude: 25.28528,
+                            latitude: 65.0121,
+                            longitude: 25.465,
                             latitudeDelta: 20,
                             longitudeDelta: 20,
                         }}

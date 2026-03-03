@@ -38,7 +38,6 @@ const FlatListElement = ({item, setLoading, setLocations, styles, DesignConfig, 
                         styles={styles.addLocationMask} 
                         setLoading={setLoading} 
                         setLocations={setLocations} 
-                        // setAddingEntry={setGetsEdited}
                         mode = 'edit'
                         startTitle = {item.name}
                         startRating = {item.rating}

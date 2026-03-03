@@ -2,8 +2,6 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import FooterMenu from './components/FooterMenu';
 import { useEffect , useState , createContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 // Firbase imports: 
 import {initializeApp} from 'firebase/app';
@@ -30,50 +28,15 @@ const menuPages = [
 
 export default function App() {
 
-  /*
-  const onLoginSuccess = async () => {
-    const user = await AsyncStorage.getItem('logged-in-user');
-    setLoggedInUser(user);
-    setLoggedIn(true);
-  }
-  */
-
   const [loggedIn, setLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   
   const auth = getAuth();
 
-  /*
-  const checkLoggedIn = async () => {
-    try {
-      const value = await AsyncStorage.getItem('logged-in');
-      if (value === 'true'){
-        setLoggedIn(true);
-        setLoggedInUser(await AsyncStorage.getItem('logged-in-user'))
-      } else {
-        setLoggedIn(false);
-        setLoggedInUser(null);
-      }
-    } catch (e) {
-      console.log("Reading Error:", e);
-      setLoggedIn(false);
-    } finally {
-      setIsLoading(false)
-    }
-  }
-  */
-
-  /*
-  useEffect(() => {
-    checkLoggedIn();
-  }, [] );
-  */
-
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User logged in
         console.log("User detected:", user.email);
         setLoggedInUser(user.email);
         setLoggedIn(true)

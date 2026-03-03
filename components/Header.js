@@ -2,7 +2,10 @@ import React from "react";
 import {View, Text, Pressable} from 'react-native';
 import { styles, DesignConfig } from "../styling/styles";
 import { Ionicons } from '@expo/vector-icons';
-import handleLogout from '../functions/handleLogout.js'
+import handleLogout from '../functions/handleLogout.js';
+import Button from "./Button.js";
+
+
 export default function Header({title=''}){
 
     const titleText = title;
@@ -12,20 +15,12 @@ export default function Header({title=''}){
                 <Text style = {styles.headerText}> {titleText} </Text>
             </View>
             <View style = {styles.flatListHeaderPressable}>
-                <Pressable onPress = {() => handleLogout()}>
-                    <View style = {styles.addLocationMask.buttonContainer}>
-                        <Text style = {styles.addLocationMask.buttonText}>Sign Out</Text>
-                        <Ionicons
-                            name = "log-out-outline"
-                            size = {DesignConfig.icon.size}
-                            color = {DesignConfig.icon.alternativeColor}
-                            style = {styles.buttonIcon}
-                        />
-                    </View>
-                </Pressable> 
+                <Button
+                    text = 'Sign Out'
+                    iconName = 'log-out-outline'
+                    onPressFunction= {() => handleLogout()}
+                />
             </View>
-            
-            
         </View>
     )
 
