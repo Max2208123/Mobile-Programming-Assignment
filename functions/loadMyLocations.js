@@ -1,12 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import { getFirestore, collection, addDoc , query, where, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-
+import {db, auth} from "../firebase/Config"
 
 const loadMyLocations = async (setLoading, setLocations) => {
-
-    const db = getFirestore();
-    const auth = getAuth();
 
     const user = auth.currentUser;
     if (!user) return;

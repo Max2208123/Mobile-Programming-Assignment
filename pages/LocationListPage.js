@@ -17,9 +17,6 @@ import Header from '../components/Header.js';
 
 export default function LocationListPage({route}){
 
-    const db = getFirestore();
-    const auth = getAuth();
-
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
 

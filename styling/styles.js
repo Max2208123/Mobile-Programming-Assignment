@@ -31,8 +31,17 @@ export const styles = {
         width: '55%',
         justifyContent: 'center',
     },
-    flatListHeaderPressable:{
+    flatListHeaderViewRight: {
         width: '45%',
+        alignItems: 'flex-end', 
+        flexDirection: 'column',
+    },
+    flatListHeaderTextRight:{
+        fontWeight: 'bold',
+        marginRight: 5,
+        color: colors.lineColorDark,
+    },
+    flatListHeaderPressable:{
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',

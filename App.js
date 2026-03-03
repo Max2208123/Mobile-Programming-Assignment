@@ -2,10 +2,12 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import FooterMenu from './components/FooterMenu';
 import { useEffect , useState , createContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Firbase imports: 
 import {initializeApp} from 'firebase/app';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
+import { auth } from './firebase/Config' ;
 
 // Page imports : 
 import LoginPage from './pages/LoginPage';
@@ -25,16 +27,38 @@ const menuPages = [
   { name: 'Countries', component: CountriesPage, iconName: 'flag' }
 ];
 
-
 export default function App() {
+
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  const auth = getAuth();
-
   useEffect(() => {
+    const checkStorageAndAuth = async () => {
+      try {
+        const savedUser = await AsyncStorage.getItem('username');
+        if (savedUser) {
+          setLoggedInUser(savedUser);
+          setLoggedIn(true)
+        }
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          if (user) {
+            setLoggedInUser(user.email);
+            setLoggedIn(true);
+          } else {
+            setLoggedInUser(null);
+            setLoggedIn(false);
+          }
+          setIsLoading(false);
+        });
+        return unsubscribe;
+      } catch(e) {
+        setIsLoading(false)
+      }  
+    };
+    checkStorageAndAuth();
+    /*
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log("User detected:", user.email);
@@ -48,7 +72,7 @@ export default function App() {
     });
 
     return unsubscribe;
-
+    */
   }, [])
 
   console.log(loggedIn)

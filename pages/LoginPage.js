@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import { View , Text, TextInput, Alert} from 'react-native';
 import { getAuth , signInWithEmailAndPassword , createUserWithEmailAndPassword} from "firebase/auth";
-import Button from '../components/Button.js'
-import {styles, DesignConfig} from "../styling/styles.js" 
-
+import Button from '../components/Button.js';
+import {styles, DesignConfig} from "../styling/styles.js";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { auth } from "../firebase/Config";
 
 export default function LoginPage(){
     const [email, setEmail] = useState("");
@@ -17,7 +18,6 @@ export default function LoginPage(){
 
     const leftButtonText = isLogin ? "To Registration" : "To Login"
     const rightButtonText = isLogin ? "Login" : "Register"
-    const auth = getAuth();
     const localButtonTextSize = 16;
 
     const handleLogin = async () => {
@@ -26,7 +26,11 @@ export default function LoginPage(){
         setIsLoading(true);
         try {
             if (isLogin) {
-                await signInWithEmailAndPassword(auth, email, password);
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                await AsyncStorage.setItem('username', user.email);
+
                 console.log("Login Successfull!");
             } else {
                 await createUserWithEmailAndPassword(auth,email,password);

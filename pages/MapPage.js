@@ -7,6 +7,7 @@ import loadMyLocations from '../functions/loadMyLocations';
 import { styles , DesignConfig} from '../styling/styles.js';
 import { getFirestore} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { auth } from "../firebase/Config.js"
 import Header from '../components/Header.js';
 import Button from '../components/Button.js';
 import { useNavigation } from '@react-navigation/native';
@@ -26,11 +27,8 @@ const handleFindCountry = (navigation) => {
 
 export default function MapPage({ route }){
 
-    const db = getFirestore();
-    const auth = getAuth();
-
     const user = auth.currentUser;
-    const userName = (user.email).split('@')[0]
+    const userName = (user.email).split('@')[0];
     const [locations, setLocations] = useState([]);
     const [loading, setLoading] = useState(false);
     const mapRef = useRef(null)
