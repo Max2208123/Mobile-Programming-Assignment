@@ -50,7 +50,7 @@ const testInputs = (title, setTitleErrorMessage, rating, setRatingErrorMessage, 
 const handleAdding = async (title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, latitude, setLatitudeErrorMessage, longitude, setLongitudeErrorMessage, setLoading, setLocations, setAddingEntry) => {
     
     const correct = testInputs(title, setTitleErrorMessage, rating, setRatingErrorMessage, description, setDescriptionErrorMessage, latitude, setLatitudeErrorMessage, longitude, setLongitudeErrorMessage)
-    console.log(correct)
+    // console.log(correct)
     if (correct){
         addLocation(title, description, rating, latitude, longitude, setLoading, setLocations);
         setAddingEntry(false);
@@ -137,7 +137,7 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
                                             setLatitude(parseFloat(result[0].latitude.toString().slice(0,10)));
                                     } 
                                 }catch (e) {
-                                    console.log("An error occured while setting the Location:", e)
+                                    console.error("An error occured while setting the Location:", e)
                                 }
                             }}
                             placeholder = 'Add Location Title'

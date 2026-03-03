@@ -18,11 +18,11 @@ export default async function deleteLocation(id, setLoading, setLocations){
     try {
         await deleteDoc(doc(db, "locations", id));
 
-        console.log("Entry deleted:", id)
+        // console.log("Entry deleted:", id)
 
         loadMyLocations(setLoading, setLocations);
     } catch (e) {
-        console.log("Error while deleting:", e)
+        console.error("Error while deleting:", e)
     }
 
 };

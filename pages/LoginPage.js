@@ -31,10 +31,10 @@ export default function LoginPage(){
 
                 await AsyncStorage.setItem('username', user.email);
 
-                console.log("Login Successfull!");
+                //console.log("Login Successfull!");
             } else {
                 await createUserWithEmailAndPassword(auth,email,password);
-                console.log("Registirerung Successfull!");
+                // console.log("Registration Successfull!");
                 Alert.alert("Success", "Account created!");
             }
 

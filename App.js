@@ -58,24 +58,9 @@ export default function App() {
       }  
     };
     checkStorageAndAuth();
-    /*
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("User detected:", user.email);
-        setLoggedInUser(user.email);
-        setLoggedIn(true)
-      } else {
-        setLoggedInUser(null);
-        setLoggedIn(false)
-      }
-      setIsLoading(false);
-    });
-
-    return unsubscribe;
-    */
   }, [])
 
-  console.log(loggedIn)
+  // console.log(loggedIn)
 
   return(
     <UserContext.Provider value = {{loggedIn, setLoggedIn, loggedInUser, setLoggedInUser}} style = {{backgroundColor: colors.backgroundColor}}>

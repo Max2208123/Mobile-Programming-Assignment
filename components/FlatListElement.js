@@ -12,8 +12,8 @@ import AddLocationMask from './AddLocationMask';
 const handleNavigation = (item, navigation, delta) => {
     
     if (item.latitude && item.longitude){
-        console.log(item.latitude)
-        console.log(item.longitude)
+        //console.log(item.latitude)
+        //console.log(item.longitude)
         navigation.navigate('Map', {
             latitude: item.latitude,
             longitude: item.longitude,
@@ -24,8 +24,6 @@ const handleNavigation = (item, navigation, delta) => {
 
 const FlatListElement = ({item, setLoading, setLocations, styles, DesignConfig, isEditing, onEditPress, onCancel}) => {
     
-    const [getsEdited, setGetsEdited] = useState(false)
-
     const navigation = useNavigation();
 
     return(

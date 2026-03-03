@@ -31,7 +31,7 @@ export default function CountriesPage({route}){
         try{
             setSearching(text)
             const URL = 'https://restcountries.com/v3.1/name/'+text
-            console.log('Fetching URL:', URL)
+            //console.log('Fetching URL:', URL)
             const response = await fetch(URL)
             
             if (response.status === 404){
@@ -43,7 +43,7 @@ export default function CountriesPage({route}){
 
             const retrievedData = await response.json();
             setData(retrievedData[0].name.common)
-            console.log(retrievedData.length)
+            //console.log(retrievedData.length)
             
             let entryArray = [];
             retrievedData.map((element)=> {
@@ -87,7 +87,7 @@ export default function CountriesPage({route}){
             setTextElements(entryArray)
             
         }catch (e){
-            console.log('An Error occured while fetching the data:',e)
+            console.error('An Error occured while fetching the data:',e)
         }finally{
             
         }

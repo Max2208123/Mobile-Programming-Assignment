@@ -18,7 +18,7 @@ export const getUserByUsername = async (username) => {
             id: userDoc.id,
             ...userDoc.data()
         };
-        console.log(data);
+        // console.log(data);
         return data;
     } catch (error) {
         console.error("Error in FirebaseController:", error);

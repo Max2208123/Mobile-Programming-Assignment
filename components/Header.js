@@ -19,7 +19,7 @@ export default function Header({title=''}){
                 if (savedUsername) {
                     setUsername(savedUsername.split('@')[0]);
                 }
-                console.log(savedUsername)
+                //console.log(savedUsername)
             } catch (error){
                 console.error("Error while loading the Username:", error)
             }

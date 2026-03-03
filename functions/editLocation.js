@@ -23,7 +23,7 @@ const editLocation = async (locationName, description, rating, latitude, longitu
             latitude: parseFloat(latitude),
             longitude: parseFloat(longitude),
         })
-        console.log("Saved");
+        // console.log("Saved");
         loadMyLocations(setLoading, setLocations)
     } catch (e) {
         console.error("Error while Saving:", e)

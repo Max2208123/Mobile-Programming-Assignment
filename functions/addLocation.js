@@ -18,7 +18,7 @@ const addLocation = async (locationName, description, rating, latitude, longitud
     }
 
     try {
-        console.log("Success");
+        //console.log("Success");
         await addDoc(collection(db, "locations"), {
             name: locationName,
             description: description,
@@ -28,7 +28,7 @@ const addLocation = async (locationName, description, rating, latitude, longitud
             latitude: parseFloat(latitude),
             longitude: parseFloat(longitude),
         })
-        console.log("Saved");
+        //console.log("Saved");
         loadMyLocations(setLoading, setLocations);
     } catch (e) {
         console.error("Error while Saving:", e);
