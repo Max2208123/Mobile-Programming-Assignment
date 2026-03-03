@@ -87,7 +87,7 @@ export default function CountriesPage({route}){
             setTextElements(entryArray)
             
         }catch (e){
-            console.error('An Error occured while fetching the data:',e)
+            // console.error('An Error occured while fetching the data:',e)
         }finally{
             
         }

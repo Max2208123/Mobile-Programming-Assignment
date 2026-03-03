@@ -137,7 +137,7 @@ export default function AddLocationMask({designConfig, styles, setLoading, setLo
                                             setLatitude(parseFloat(result[0].latitude.toString().slice(0,10)));
                                     } 
                                 }catch (e) {
-                                    console.error("An error occured while setting the Location:", e)
+                                    // console.error("An error occured while setting the Location:", e)
                                 }
                             }}
                             placeholder = 'Add Location Title'

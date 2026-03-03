@@ -21,7 +21,7 @@ export const getUserByUsername = async (username) => {
         // console.log(data);
         return data;
     } catch (error) {
-        console.error("Error in FirebaseController:", error);
+        // console.error("Error in FirebaseController:", error);
         throw error;
     }
 }

@@ -40,7 +40,7 @@ export default function LoginPage(){
             }
 
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             if (error.code === 'auth/invalid-email') setErrorMessageUsername("E-Mail invalid");
             else if (error.code === 'auth/user-not-found') setErrorMessageUsername("User does not exist");
             else if (error.code === 'auth/wrong-password') setErrorMessagePassword("Wrong Password");

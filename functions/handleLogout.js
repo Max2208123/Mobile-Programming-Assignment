@@ -11,7 +11,7 @@ const handleLogout = async () => {
         await signOut(auth);
         await AsyncStorage.removeItem('username');
     } catch (error){
-        console.error("Logout error", error)
+        // console.error("Logout error", error)
     }
 };
 export default handleLogout;

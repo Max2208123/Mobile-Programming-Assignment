@@ -13,7 +13,7 @@ const addLocation = async (locationName, description, rating, latitude, longitud
     const user = auth.currentUser;
     
     if (!user) {
-        console.error("No User logged in!");
+        // console.error("No User logged in!");
         return;
     }
 
@@ -31,7 +31,7 @@ const addLocation = async (locationName, description, rating, latitude, longitud
         //console.log("Saved");
         loadMyLocations(setLoading, setLocations);
     } catch (e) {
-        console.error("Error while Saving:", e);
+        // console.error("Error while Saving:", e);
     }
 }
 export default addLocation;

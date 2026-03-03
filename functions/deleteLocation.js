@@ -11,7 +11,7 @@ export default async function deleteLocation(id, setLoading, setLocations){
     const user = auth.currentUser;
 
     if (!user) {
-        console.error("No user logged in!")
+        // console.error("No user logged in!")
         return;
     }
 
@@ -22,7 +22,7 @@ export default async function deleteLocation(id, setLoading, setLocations){
 
         loadMyLocations(setLoading, setLocations);
     } catch (e) {
-        console.error("Error while deleting:", e)
+        // console.error("Error while deleting:", e)
     }
 
 };

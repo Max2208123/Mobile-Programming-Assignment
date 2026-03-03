@@ -22,7 +22,7 @@ const loadMyLocations = async (setLoading, setLocations) => {
         setLocations(myData)
         // console.log("Meine Locations:", myData);
     } catch (e) {
-        console.error("Error while loading:", e)
+        // console.error("Error while loading:", e)
     } finally {
         setLoading(false);
     }

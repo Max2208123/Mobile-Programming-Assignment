@@ -11,7 +11,7 @@ const editLocation = async (locationName, description, rating, latitude, longitu
     const user = auth.currentUser;
     
     if (!user) {
-        console.error("No User logged in!");
+        // console.error("No User logged in!");
         return;
     }
     try {
@@ -26,7 +26,7 @@ const editLocation = async (locationName, description, rating, latitude, longitu
         // console.log("Saved");
         loadMyLocations(setLoading, setLocations)
     } catch (e) {
-        console.error("Error while Saving:", e)
+        // console.error("Error while Saving:", e)
     }
     return;
 };
