@@ -33,8 +33,10 @@ export default function LoginPage(){
 
                 //console.log("Login Successfull!");
             } else {
+                
                 await createUserWithEmailAndPassword(auth,email,password);
                 // console.log("Registration Successfull!");
+                await AsyncStorage.setItem('username', user.email);
                 Alert.alert("Success", "Account created!");
             }
 
